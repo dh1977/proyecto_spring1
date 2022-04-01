@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org">
+
+	<head>
+		<meta charset="UTF-8">
+		<link href="/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+
+	</head>
+	
+	<body>
+		<div class="container my-2" th:fragment="header">
+			<div class="panel-body">
+				<h3>Mantenedor</h3>
+			</div>
+			
+			<div class="navbar navbar-default">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+							Opciones
+						</button>
+					</div>
+					<div class="collapse navbar-collapse" id="myNavbar">
+						<div class="nav navbar-nav">
+							<a href="/">Inicio</a>
+							<a href="/Deps">Departamentos</a>
+							<a href="#"  onclick="list(1);">Ver 1 depto</a>
+							<a href="#"  onclick="list(2);">Crear 1 depto</a>
+						</div>
+<!-- 						<ul class="nav navbar-nav"> -->
+<!-- 							<li><a href="/">Inicio</a></li> -->
+<!-- 							<li><a href="/empl_page">Empleados</a></li> -->
+<!-- 							<li><a href="#"  onclick="list(1);">Ver 1 depto</a></li> -->
+<!-- 							<li><a href="#"  onclick="list(2);">Crear 1 depto</a></li> -->
+<!-- 						</ul> -->
+					</div>
+				</div>
+			</div>
+			
+			<hr>
+		</div>
+		
+		<!-- 	Carga de librerías js aquí, al final del body (x performance en la carga de la página) -->
+		<script type="text/javascript" src="/js/jquery-3.6.0.js"></script>
+		<script type="text/javascript" src="/js/bootstrap.js"></script>
+	</body>
+</html>

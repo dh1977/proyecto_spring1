@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<link href="/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+		<link href="/css/estilo_gral.css" rel="stylesheet"/>
+		
+		<script type="text/javascript" src="/js/jquery-3.6.0.js"></script>
+		<script type="text/javascript" src="/js/bootstrap.js"></script>
+		
+		<title>Departamentos</title>
+	</head>
+	
+	<body>
+		<script type="text/javascript">
+			function llamar_controller(){
+				
+				$.ajax({
+					// El retorno puede ser: (1) datos o (2) un mensaje que comienza 
+					// por '¡' para distinguirlo de los datos.
+					// Si hay un error, el servlet lanza una Exception que retorna
+					// en el 'response' con un '!' inicial.
+					type : 'POST',
+					url  : '/deps/selectAll',
+// 					data : { accion: accion_escogida
+// 							 , title_no: (num=='' || isNaN(num))?'0':num
+// 							 , title: $('#txtNom').val()
+// 							 },
+					success: function (resp) {
+						if ( resp === null ) 
+							alert( 'Hubo un error en "selectAll"'  );
+						else 	
+							$('#txtNom').val(resp);
+
+					},
+					error: function (jqXHR, textStatus, errorThrown) {
+						let err = 'No se pudo realizar la acción:' 
+									+ '\nStatus: ' + textStatus 
+									+ '\nError: ' + errorThrown;
+	
+						alert(err);
+					}
+				});
+			}
+
+			function validar_datos() {
+				let err = '';
+			
+				if ( ['crear','modificar'].indexOf(accion_escogida) >= 0 ) {
+					if ( $('#txtNom').val() == '' )
+						err = 'Debe ingresar el nombre.'
+				}
+				return err;
+			}
+		
+			function limpiarPantalla() {
+				// Escondo la zona de edición
+				$('#inputs').hide();
+				
+				// Limpio textboxes
+				$('#txtNum').val('');
+				$('#txtNom').val('');
+				
+				// Reahabito el menú
+				$('#acciones > .btn').prop( "disabled", false );
+			}
+			
+			$(document).ready(function() {
+				// Clic en los botones de 'acción' (superiores)
+				$('#acciones > .btn').click(function() {
+					// Inhabilito el menú (botones superiores)
+					$('#acciones > .btn').prop( 'disabled', true );
+					
+					// Título de la zona de edición
+					$('#lblAccion').text($(this).text() + ' departamento');
+					
+					// Traspaso el color y el texto del botón del menú al botón 'btnOk'
+					$('#btnOk').css('background-color', $(this).css('background-color'));
+					$('#btnOk').text( $(this).text() );
+
+					// Habilito/deshab. textbox 'nombre' dependiendo de la acción.
+					accion_escogida = $(this).text().toLowerCase();
+					$('#txtNom').prop( 'disabled', ['eliminar','consultar'].indexOf(accion_escogida) >= 0);
+					
+					// Muestro la zona de edición
+					$("#inputs").show();
+					$("#txtNum").focus();
+				});
+				
+				$('#btnCancelar').click(function() {
+					limpiarPantalla();
+				});
+				
+				$(document).keydown(function(event) {
+					if ( event.which == 27 )
+						// 'Esc' presionado <=> 'Cancelar'
+						limpiarPantalla();
+				});
+				
+				// Llamado al controlador
+				$('#btnOk').click(function() {
+					let msg = validar_datos();
+					
+					if ( msg == '') 
+						llamar_controller();
+					else 
+						alert(msg);
+				});
+			});
+		</script>
+	
+		<div class="container-fluid ml-1" style="width:60%">
+			<div class="jumbotron">
+				<h2>Departamentos</h2>
+			</div>
+		
+			<div class="container-fluid my-2 px-1 py-1" 
+					style="border: 2px solid blue; border-radius: 5px">
+	
+				<div class="btn-group-sm py-2 mx-auto" id="acciones">
+					<!-- Opciones  -->
+					<button type="button" class="btn btn-primary mx-1">Crear</button>
+					<button type="button" class="btn btn-warning mx-1">Modificar</button>
+					<button type="button" class="btn btn-danger mx-1">Eliminar</button>
+					<button type="button" class="btn btn-info mx-1" >Consultar</button>
+				</div>
+		
+				<div id="inputs" style="display:none">
+					<hr style="border-color:blue"> 
+					<p id="lblAccion" style="font-weight:bold; margin-left:10px">accion</p>
+					
+					<label for="txtNum" class="label ml-2">Nro. departamento:</label><br>
+					<input class="input-sm ml-2" type="text" id="txtNum" style="min-width:15%;"><br>
+	
+					<label for="txtNom" class="label ml-2 mt-3">Nombre:</label><br>
+					<input class="input-sm ml-2" type="text" id="txtNom" maxlength="40" style="min-width:60%">
+					<br>
+					
+					<div class="btn-group-sm pt-3">
+						<button type="button" class="btn btn-success mx-3" id="btnOk">
+							Confirmar
+						</button>				
+						<button type="button" class="btn mx-3" id="btnCancelar" title="Esc" 
+								style="color:white;background-color:black">
+							Cancelar
+						</button>			
+					</div>
+				</div>
+			</div>
+		</div>
+				
+	</body>
+</html>

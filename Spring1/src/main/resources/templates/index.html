@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org">
+
+	<head>
+		<meta charset="UTF-8">
+		<link href="/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}" />
+		<link href="/css/estilo_gral.css" rel="stylesheet"/>
+		
+		<title>Spring1</title>
+	</head>
+	
+	<body>
+		<script>
+			function list(prm){
+				$.ajax({
+					type : 'post',
+					url : '/deps/' + ['','select','insert'][prm],
+					data: 'd001',
+					success : function(resp) {
+						$("#mensaje").text(resp);
+					}
+				});
+			}
+		</script>
+		
+		<div class="container-fluid ml-5" style="width:60%">
+			<!-- Incluyo el menú en header.html -->
+			<div class="container" th:replace="fragments/header :: header"></div>
+
+			<div class="jumbotron" style="text-align:center">
+				<h2>Ejemplo SpringBoot app en puerto 8090.</h2>
+			</div>
+			<h4><b>Vista: </b>Bootstrap - JQuery - Thymeleaf</h4>
+			<h4><b>Controlador: </b>SpringBoot Servlet</h4>
+			<h4><b>Modelo: </b>DAO/DTO - JDBCTemplate</h4>
+			<label id="mensaje" style="width:80%"></label>
+		</div>
+
+		<script type="text/javascript" src="/js/jquery-3.6.0.js"></script>
+		<script type="text/javascript" src="/js/bootstrap.js"></script>
+
+	</body>
+</html>
